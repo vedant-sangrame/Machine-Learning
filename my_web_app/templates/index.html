@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction App</title>
+    <style>
+        :root {
+            --bg-1: #0f172a;
+            --bg-2: #1e293b;
+            --card: #0b1220;
+            --accent: #f59e0b;
+            --accent-2: #22c55e;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --border: #1f2a44;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Manrope", "Montserrat", "Trebuchet MS", sans-serif;
+            color: var(--text);
+            background: radial-gradient(1200px 800px at 10% 10%, #1f2a44 0%, transparent 60%),
+                        radial-gradient(1000px 700px at 90% 20%, #243b55 0%, transparent 55%),
+                        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+            display: grid;
+            place-items: center;
+            padding: 32px;
+        }
+
+        .card {
+            width: min(720px, 95vw);
+            background: linear-gradient(180deg, rgba(11, 18, 32, 0.9), rgba(11, 18, 32, 0.75));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(2, 6, 23, 0.6);
+            backdrop-filter: blur(6px);
+        }
+
+        .title {
+            font-size: 28px;
+            letter-spacing: 0.5px;
+            margin: 0 0 8px 0;
+        }
+        .subtitle {
+            margin: 0 0 24px 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #24324f;
+            background: #0b1220;
+            color: var(--text);
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+
+        .actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.35);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-2);
+            font-size: 12px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .result {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 6px 0 0 0;
+        }
+        .hint {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="title">Prediction App</h1>
+        <p class="subtitle">Enter a numeric value to get the model prediction.</p>
+
+        <div class="grid">
+            <div class="panel">
+                <label for="input">Input Value</label>
+                <form action="/predict" method="post">
+                    <input id="input" type="text" name="input" placeholder="e.g. 42.5" required>
+                    <div class="actions">
+                        <button type="submit">Predict</button>
+                        <span class="badge">Fast • Local</span>
+                    </div>
+                </form>
+                <div class="hint">Tip: use a decimal value for better precision.</div>
+            </div>
+
+            <div class="panel">
+                <label>Prediction Result</label>
+                {% if result %}
+                    <div class="result">{{ result }}</div>
+                    <div class="hint">Model output based on your input.</div>
+                {% else %}
+                    <div class="result">—</div>
+                    <div class="hint">Submit a value to see prediction.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
